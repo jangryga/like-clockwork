@@ -6,21 +6,11 @@ on:
     paths:
       - "web"
   workflow_dispatch:
-    inputs:
-      deployment_type:
-        type: choice
-        description: "Workflow options"
-        options:
-          - skip_build
-          - include_build
 
 jobs:
   build:
     name: Build and push to Docker
     runs-on: ubuntu-22.04
-    if: |
-      ${{ github.event_name == 'push' }} || 
-      (${{ github.event_name == 'workflow_dispatch' }} && ${{ github.event.inputs.deployment_type == 'include_build' }})
 
     steps:
       - name: Clone repo
@@ -42,7 +32,7 @@ jobs:
   deploy:
     name: Deploy to Linode
     runs-on: ubuntu-22.04
-    # needs: build
+    needs: build
     if: github.ref == 'refs/heads/main'
 
     steps:
