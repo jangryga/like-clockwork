@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  web:
+    image: jangryga/clockwork-server:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - RUST_LOG=info
+
+  nginx:
+    image: "${NGINX_IMAGE}"
+    ports:
+      - 80:80
+    depends_on:
+      - web
