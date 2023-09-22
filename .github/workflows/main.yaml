@@ -2,24 +2,29 @@ name: Automated Deployment
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
     paths:
-      - "server"
+      - "web"
   workflow_dispatch:
+    inputs:
+      deployment_type:
+        type: choice
+        description: "Workflow options"
+        options:
+          - skip_build
+          - include_build
 
 jobs:
-  docker-build:
-    name: Build server
+  build:
+    name: Build and push to Docker
     runs-on: ubuntu-22.04
-    
+    if: |
+      ${{ github.event_name == 'push' }} || 
+      (${{ github.event_name == 'workflow_dispatch' }} && ${{ github.event.inputs.deployment_type == 'include_build' }})
+
     steps:
       - name: Clone repo
         uses: actions/checkout@v1
-
-      # - name: Set environment variables
-      #   run: |
-      #     echo "WEB_IMAGE=$(echo ${{env.SERVER_IMAGE}} )" >> $GITHUB_ENV
-      #     echo "NGINX_IMAGE=$(echo ${{env.NGINX_IMAGE}} )" >> $GITHUB_ENV
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -33,3 +38,13 @@ jobs:
           docker build --tag clockwork-server .
           docker tag clockwork-server jangryga/clockwork-server:latest
           docker push jangryga/clockwork-server
+  
+  deploy:
+    name: Deploy to Linode
+    runs-on: ubuntu-22.04
+    # needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Log in
+        run: echo "hello world"
