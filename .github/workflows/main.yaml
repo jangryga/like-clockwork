@@ -60,7 +60,9 @@ jobs:
             docker compose pull 
             docker compose up -d
           ENDSSH
-      - name: Update client
+      - name: Update client]
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         working-directory: ./web/client
         run: |
           npm install
