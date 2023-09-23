@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Clone repo
+      - name: Checkout
         uses: actions/checkout@v1
 
       - name: Login to Docker Hub
@@ -23,11 +23,14 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
       - name: Build images
-        working-directory: ./web/server
+        working-directory: ./web
         run: |
-          docker build --tag clockwork-server .
+          docker build --tag clockwork-server ./server
+          docker build --tag clockwork-balancer ./nginx
           docker tag clockwork-server jangryga/clockwork-server:latest
+          docker tag clockwork-balancer jangryga/clockwork-balancer:latest
           docker push jangryga/clockwork-server
+          docker push jangryga/clockwork-balancer
   
   deploy:
     name: Deploy to Linode
@@ -36,5 +39,24 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Log in
-        run: echo "hello world"
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Add the private SSH key to the ssh-agent
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
+      - name: Build and deploy images on Linode
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          scp  -o StrictHostKeyChecking=no -r ./web/docker-compose.yaml root@${{ secrets.LINODE_IP_ADDRESS }}:/app
+          ssh -o StrictHostKeyChecking=no root@${{ secrets.LINODE_IP_ADDRESS }} << 'ENDSSH'
+            cd /app
+            docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+            docker compose pull 
+            sudo docker-compose up -d
+          ENDSSH

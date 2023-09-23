@@ -3,13 +3,19 @@ version: "3.8"
 services:
   web:
     image: jangryga/clockwork-server:latest
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
       - RUST_LOG=info
 
   nginx:
-    image: "${NGINX_IMAGE}"
+    image: jangryga/clockwork-balancer:latest
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     ports:
       - 80:80
     depends_on:
