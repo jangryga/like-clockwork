@@ -60,3 +60,10 @@ jobs:
             docker compose pull 
             docker compose up -d
           ENDSSH
+      - name: Update client
+        working-directory: ./web/client
+        run: |
+          npm install
+          npm run build
+          ssh -o StrictHostKeyChecking=no root@${{ secrets.LINODE_IP_ADDRESS }} "rm -rf /var/www/skillstech.app/*"
+          scp  -o StrictHostKeyChecking=no -r ./dist/* root@${{ secrets.LINODE_IP_ADDRESS }}:/var/www/skillstech.app/
