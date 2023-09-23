@@ -5,11 +5,16 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "build": "astro build",
+    "client:deploy": "npm run build && node scripts/deploy.mjs"
   },
   "dependencies": {
     "astro": "^3.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.6.4",
+    "dotenv": "^16.3.1"
   }
 }
