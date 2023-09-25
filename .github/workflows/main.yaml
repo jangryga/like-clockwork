@@ -25,11 +25,11 @@ jobs:
       - name: Build images
         working-directory: ./web
         run: |
-          # docker build --tag clockwork-server ./server
+          docker build --tag clockwork-server ./server
           docker build --tag clockwork-balancer ./nginx
-          # docker tag clockwork-server jangryga/clockwork-server:latest
+          docker tag clockwork-server jangryga/clockwork-server:latest
           docker tag clockwork-balancer jangryga/clockwork-balancer:latest
-          # docker push jangryga/clockwork-server
+          docker push jangryga/clockwork-server
           docker push jangryga/clockwork-balancer
   
   deploy:

@@ -1,4 +1,4 @@
-FROM rust:1.72.0
+FROM rust:1.72.0 AS builder
 
 WORKDIR /app
 
@@ -8,4 +8,16 @@ COPY . .
 
 RUN cargo build --release
 
-ENTRYPOINT [ "./target/release/server" ]
+FROM ubuntu:22.04 AS runtime
+
+WORKDIR /app
+
+RUN apt-get update -y \
+    && apt-get install -y --no-install-recommends openssl ca-certificates \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /app/target/release/server server
+
+ENTRYPOINT [ "./server" ]
