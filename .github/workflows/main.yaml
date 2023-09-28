@@ -41,7 +41,7 @@ jobs:
             --cache-to=type=local,dest=${{ github.workspace }}/docker-build-cache \
             --tag clockwork-server \
             .
-          docker tag clockwork-server jangryga/clockwork-balancer:latest
+          docker tag clockwork-server jangryga/clockwork-server:latest
           docker push jangryga/clockwork-server
 
       - name: Build Nginx
