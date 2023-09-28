@@ -36,9 +36,7 @@ jobs:
       - name: Build Nginx
         working-directory: ./web/nginx
         run: |
-          docker buildx build --tag clockwork-balancer .
-          docker tag clockwork-balancer jangryga/clockwork-balancer:latest
-          docker push jangryga/clockwork-balancer
+          docker buildx build --tag jangryga/clockwork-balancer:latest --push .
 
       - name: Build Actix-web server with cache
         working-directory: ./web/server
