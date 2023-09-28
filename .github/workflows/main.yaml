@@ -26,6 +26,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Cache cargo-chef layers
+        id: cache-layers
         uses: actions/cache@v3
         with:
           path: ${{ github.workspace }}/docker-build-cache
@@ -33,10 +34,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-chef-
 
-      - name: Build Nginx
-        working-directory: ./web/nginx
-        run: |
-          docker buildx build --tag jangryga/clockwork-balancer:latest --push .
+      - name: List cache directory [DEBUG]
+        if: steps.cache-layers.outputs.cache-hit == 'true'
+        run: ls -la ${{ github.workspace }}/docker-build-cache
 
       - name: Build Actix-web server with cache
         working-directory: ./web/server
@@ -47,6 +47,11 @@ jobs:
             --tag jangryga/clockwork-server:latest \
             --push \
             .
+
+      - name: Build Nginx
+        working-directory: ./web/nginx
+        run: |
+          docker buildx build --tag jangryga/clockwork-balancer:latest --push .
   
   deploy:
     name: Deploy to Linode
