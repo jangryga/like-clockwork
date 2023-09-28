@@ -39,15 +39,17 @@ jobs:
           docker buildx build \
             --cache-from=type=local,src=${{ github.workspace }}/docker-build-cache \
             --cache-to=type=local,dest=${{ github.workspace }}/docker-build-cache \
-            --tag jangryga/clockwork-server:latest \
+            --tag clockwork-server \
             .
-          docker push jangryga/clockwork-server:latest
+          docker tag clockwork-server jangryga/clockwork-balancer:latest
+          docker push jangryga/clockwork-server
 
       - name: Build Nginx
         working-directory: ./web/nginx
         run: |
-          docker build --tag jangryga/clockwork-balancer:latest .
-          docker push jangryga/clockwork-balancer:latest
+          docker build --tag clockwork-balancer .
+          docker tag clockwork-balancer jangryga/clockwork-balancer:latest
+          docker push jangryga/clockwork-balancer
   
   deploy:
     name: Deploy to Linode
