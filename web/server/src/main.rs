@@ -12,7 +12,7 @@ async fn echo(req_body: String) -> impl Responder {
 }
 
 async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello from Actix:)")
+    HttpResponse::Ok().body("Hello from Actix!")
 }
 
 
