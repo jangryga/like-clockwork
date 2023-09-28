@@ -33,6 +33,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-chef-
 
+      - name: Build Nginx
+        working-directory: ./web/nginx
+        run: |
+          docker buildx build --tag clockwork-balancer .
+          docker tag clockwork-balancer jangryga/clockwork-balancer:latest
+          docker push jangryga/clockwork-balancer
+
       - name: Build Actix-web server with cache
         working-directory: ./web/server
         run: |
@@ -44,12 +51,7 @@ jobs:
           docker tag clockwork-server jangryga/clockwork-server:latest
           docker push jangryga/clockwork-server
 
-      - name: Build Nginx
-        working-directory: ./web/nginx
-        run: |
-          docker build --tag clockwork-balancer .
-          docker tag clockwork-balancer jangryga/clockwork-balancer:latest
-          docker push jangryga/clockwork-balancer
+      
   
   deploy:
     name: Deploy to Linode
