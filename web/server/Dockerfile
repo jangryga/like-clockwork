@@ -10,6 +10,7 @@ FROM chef AS builder
 COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
+RUN cargo prisma generate
 RUN cargo build --release
 
 FROM ubuntu:22.04 AS runtime
