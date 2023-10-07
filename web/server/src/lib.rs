@@ -17,7 +17,7 @@ pub async fn run() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .wrap(Logger::new("%a %{User-Agent}i"))
-            .route("/", web::get().to(hello))
+            .route("/{name}", web::get().to(hello))
             .route("/health_check", web::get().to(health_check))
     })
     .bind(("0.0.0.0", 8080))?
