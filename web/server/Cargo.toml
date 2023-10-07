@@ -9,8 +9,6 @@ edition = "2021"
 path = "src/main.rs"
 name = "server"
 
-[alias]
-prisma = "run --bin prisma --"
 
 [dependencies]
 actix-web = "4"
