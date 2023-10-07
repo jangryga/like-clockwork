@@ -4,7 +4,7 @@ use env_logger;
 
 async fn hello(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("World");
-    format!("Hello {} !", &name)
+    format!("Hello {}", &name)
 }
 
 async fn health_check(req: HttpRequest) -> impl Responder {
@@ -17,8 +17,8 @@ pub async fn run() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .wrap(Logger::new("%a %{User-Agent}i"))
-            .route("/{name}", web::get().to(hello))
             .route("/health_check", web::get().to(health_check))
+            .route("/{name}", web::get().to(hello))
     })
     .bind(("0.0.0.0", 8080))?
     .run()
