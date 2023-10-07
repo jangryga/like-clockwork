@@ -2,8 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "cargo prisma"
-  output = "../src/db.rs"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -14,4 +13,5 @@ datasource db {
 model User {
   id String @id @default(uuid())
   username String @db.VarChar(256)
+  email String? @db.VarChar(256)
 }
