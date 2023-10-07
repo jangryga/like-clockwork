@@ -407,6 +407,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "clockwork-server"
+version = "0.1.0"
+dependencies = [
+ "actix-web",
+ "chrono",
+ "config",
+ "env_logger",
+ "secrecy",
+ "serde",
+ "serde-aux",
+ "sqlx",
+ "tokio",
+ "tracing",
+ "tracing-actix-web",
+ "tracing-bunyan-formatter",
+ "tracing-log",
+ "tracing-subscriber",
+ "uuid",
+]
+
+[[package]]
 name = "config"
 version = "0.13.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1650,27 +1671,6 @@ dependencies = [
  "itoa",
  "ryu",
  "serde",
-]
-
-[[package]]
-name = "server"
-version = "0.1.0"
-dependencies = [
- "actix-web",
- "chrono",
- "config",
- "env_logger",
- "secrecy",
- "serde",
- "serde-aux",
- "sqlx",
- "tokio",
- "tracing",
- "tracing-actix-web",
- "tracing-bunyan-formatter",
- "tracing-log",
- "tracing-subscriber",
- "uuid",
 ]
 
 [[package]]
