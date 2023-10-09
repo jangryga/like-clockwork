@@ -18,6 +18,6 @@ async fn health_check() {
 
     let response = client.get(format!("{}/health_check", &address)).send().await.expect("Request failed.");
 
-    assert!(response.status().is_server_error());
+    assert!(response.status().is_success());
     assert_eq!(Some(0), response.content_length());
 }
