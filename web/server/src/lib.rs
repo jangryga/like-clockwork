@@ -1,7 +1,9 @@
+pub mod configuration;
+
 use std::net::TcpListener;
 
-use actix_web::HttpRequest;
 use actix_web::dev::Server;
+use actix_web::HttpRequest;
 use actix_web::{middleware::Logger, web, App, HttpResponse, HttpServer, Responder};
 use env_logger;
 

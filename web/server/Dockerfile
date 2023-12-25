@@ -22,4 +22,6 @@ RUN apt-get update -y \
 
 COPY --from=builder /app/target/release/server server
 
+ENV APP_ENVIRONMENT production
+
 ENTRYPOINT [ "./server" ]
