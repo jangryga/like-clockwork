@@ -9,12 +9,6 @@ async fn main() -> anyhow::Result<()> {
 
     let configuration = get_configuration().expect("Failed to read configuration.");
 
-    let addr = if std::env::var("ENV").unwrap() == "production" {
-        "127.0.0.1:8080"
-    } else {
-        "0.0.0.0:8080"
-    };
-
-    let listener = TcpListener::bind(addr).expect("Failed to bind port 8080");
+    let listener = TcpListener::bind("0.0.0.0:8080").expect("Failed to bind port 8080");
     Ok(run(listener)?.await?)
 }
