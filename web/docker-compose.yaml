@@ -12,7 +12,7 @@ services:
       - RUST_LOG=info
       - RUST_BACKTRACE=1
       - APP_APPLICATION__BASE_URL="https://skillstech.app"
-      - APP_REDIS_URI="redis://redis:6379"
+      
     depends_on:
       - redis
   
