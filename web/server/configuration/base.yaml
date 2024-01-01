@@ -9,4 +9,4 @@ database:
   password: "password"
   database_name: "postgres"
   require_ssl: false
-redis_uri: "redis://redis:6379"
+redis_uri: "redis://127.0.0.1:6379"
