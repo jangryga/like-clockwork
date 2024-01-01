@@ -1,5 +1,5 @@
 application:
-  port: 8000
+  port: 8080
   host: 0.0.0.0
   hmac_secret: "very-strong-secret-1234-that-is-long-enough-i-hope-very-much-please-be-long-enough"
 database:

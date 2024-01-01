@@ -73,7 +73,7 @@ async fn run(
     let db_pool = Data::new(db_pool);
     let base_url = Data::new(ApplicationBaseUrl(base_url));
     let secret_key = Key::from(hmac_secret.expose_secret().as_bytes());
-    let redis_store = RedisSessionStore::new(redis_uri.expose_secret()).await.unwrap();
+    let redis_store = RedisSessionStore::new(redis_uri.expose_secret()).await?;
     let server = HttpServer::new(move || {
         App::new()
             .wrap(SessionMiddleware::new(redis_store.clone(), secret_key.clone()))
