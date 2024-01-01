@@ -1,10 +1,12 @@
-use secrecy::Secret;
+use secrecy::{Secret, ExposeSecret};
 use serde_aux::field_attributes::deserialize_number_from_string;
+use sqlx::postgres::{PgConnectOptions, PgSslMode};
 
 #[derive(serde::Deserialize, Clone)]
 pub struct Settings {
     pub database: DatabaseSettings,
     pub application: ApplicationSettings,
+    pub redis_uri: Secret<String>
 }
 
 #[derive(serde::Deserialize, Clone)]
@@ -51,6 +53,27 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
         .build()?;
         
     settings.try_deserialize::<Settings>()
+}
+
+
+impl DatabaseSettings {
+    pub fn without_db(&self) -> PgConnectOptions {
+        let ssl_mode = if self.require_ssl {
+            PgSslMode::Require
+        } else {
+            PgSslMode::Prefer
+        };
+        PgConnectOptions::new()
+            .host(&self.host)
+            .username(&self.username)
+            .password(self.password.expose_secret())
+            .port(self.port)
+            .ssl_mode(ssl_mode)
+    }
+
+    pub fn with_db(&self) -> PgConnectOptions {
+        self.without_db().database(&self.database_name)
+    }
 }
 
 pub enum Environment {

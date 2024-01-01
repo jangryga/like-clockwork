@@ -1,7 +1,7 @@
 application:
   port: 8000
   host: 0.0.0.0
-  hmac_secret: "very-strong-secret-1234"
+  hmac_secret: "very-strong-secret-1234-that-is-long-enough-i-hope-very-much-please-be-long-enough"
 database:
   host: "127.0.0.1"
   port: 5432
@@ -9,3 +9,4 @@ database:
   password: "password"
   database_name: "postgres"
   require_ssl: false
+redis_uri: "redis://127.0.0.1:6379"
