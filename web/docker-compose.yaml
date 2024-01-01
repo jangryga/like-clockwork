@@ -12,7 +12,10 @@ services:
       - RUST_LOG=info
       - RUST_BACKTRACE=1
       - APP_APPLICATION__BASE_URL="https://skillstech.app"
-      
+      - APP_DATABASE__HOST=${DB_HOST}
+      - APP_DATABASE__USERNAME=${DB_USERNAME}
+      - APP_DATABASE__PASSWORD=${DB_PASSWORD}
+      - APP_DATABASE__DATABASE_NAM=${DB_DATABASE_NAME}
     depends_on:
       - redis
   
