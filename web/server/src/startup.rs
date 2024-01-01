@@ -6,14 +6,14 @@ use actix_session::SessionMiddleware;
 use actix_session::storage::RedisSessionStore;
 use actix_web::dev::Server;
 use actix_web::{HttpRequest, web};
-use actix_web::{middleware::Logger, App, HttpResponse, HttpServer, Responder};
+use actix_web::{middleware::Logger, App, HttpServer, Responder};
 use actix_web::web::Data;
 use actix_web::cookie::Key;
-use env_logger;
-use anyhow::{Error};
 use secrecy::{Secret, ExposeSecret};
 use sqlx::PgPool;
 use sqlx::postgres::PgPoolOptions;
+
+use crate::routes::{health_check, hello};
 
 
 pub struct Application {
@@ -50,16 +50,6 @@ pub fn get_connection_pool(config: &DatabaseSettings) -> PgPool {
     PgPoolOptions::new().connect_lazy_with(config.with_db())
 }
 
-// old below
-
-async fn hello(req: HttpRequest) -> impl Responder {
-    let name = req.match_info().get("name").unwrap_or("World");
-    format!("Hello {}", &name)
-}
-
-async fn health_check(req: HttpRequest) -> impl Responder {
-    HttpResponse::Ok().finish()
-}
 
 pub struct ApplicationBaseUrl(pub String);
 
