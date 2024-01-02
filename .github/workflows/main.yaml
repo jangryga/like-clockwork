@@ -59,18 +59,14 @@ jobs:
       - name: Build and deploy images on Linode
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_DATABASE_NAME: ${{ secrets.DB_DATABASE_NAME }}
         run: |
           scp  -o StrictHostKeyChecking=no -r ./web/docker-compose.yaml root@${{ secrets.LINODE_IP_ADDRESS }}:/app
-          ssh -o StrictHostKeyChecking=no root@${{ secrets.LINODE_IP_ADDRESS }} << 'ENDSSH'
+          ssh -o StrictHostKeyChecking=no root@${{ secrets.LINODE_IP_ADDRESS }} << "ENDSSH"
             cd /app
-            export DB_HOST=${DB_HOST}
-            export DB_USERNAME=${DB_USERNAME}
-            export DB_PASSWORD=${DB_PASSWORD}
-            export DB_DATABASE_NAME=${DB_DATABASE_NAME}
+            export DB_HOST=${{ secrets.DB_HOST }}
+            export DB_USERNAME=${{ secrets.DB_USERNAME }}
+            export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            export DB_DATABASE_NAME=${{ secrets.DB_DATABASE_NAME }}
             echo 'DEBUG INFO:'
             echo ${DB_HOST}
             echo ${DB_PASSWORD}
