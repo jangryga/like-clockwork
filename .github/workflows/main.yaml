@@ -71,6 +71,11 @@ jobs:
             export DB_USERNAME=${DB_USERNAME}
             export DB_PASSWORD=${DB_PASSWORD}
             export DB_DATABASE_NAME=${DB_DATABASE_NAME}
+            echo 'DEBUG INFO:'
+            echo ${DB_HOST}
+            echo ${DB_PASSWORD}
+            echo ${DB_DATABASE_NAME}
+            echo ${DB_USERNAME}
             docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
             docker compose pull 
             docker compose up -d
