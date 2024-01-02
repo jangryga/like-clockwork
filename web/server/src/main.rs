@@ -3,7 +3,6 @@ use clockwork_server::startup::Application;
 use clockwork_server::configuration::get_configuration;
 use tokio::task::JoinError;
 
-
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let configuration = get_configuration().expect("Failed to read configuration.");
