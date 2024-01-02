@@ -15,7 +15,6 @@ use sqlx::postgres::PgPoolOptions;
 
 use crate::routes::{health_check, hello};
 
-
 pub struct Application {
     port: u16,
     server: Server
@@ -45,11 +44,9 @@ impl Application {
     }
 }
 
-
 pub fn get_connection_pool(config: &DatabaseSettings) -> PgPool {
     PgPoolOptions::new().connect_lazy_with(config.with_db())
 }
-
 
 pub struct ApplicationBaseUrl(pub String);
 
@@ -82,16 +79,3 @@ async fn run(
 #[derive(Clone)]
 pub struct HmacSecret(pub Secret<String>);
 
-// pub fn run(listener: TcpListener) -> std::result::Result<Server, std::io::Error> {
-//     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
-
-//     let server = HttpServer::new(|| {
-//         App::new()
-//             .wrap(Logger::new("%a %{User-Agent}i"))
-//             .route("/health_check", web::get().to(health_check))
-//             .route("/{name}", web::get().to(hello))
-//     })
-//     .listen(listener)?
-//     .run();
-//     Ok(server)
-// }
