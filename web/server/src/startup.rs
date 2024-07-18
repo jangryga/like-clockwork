@@ -1,6 +1,6 @@
 use std::net::TcpListener;
-
 use crate::configuration::{ DatabaseSettings, Settings };
+
 
 use actix_session::SessionMiddleware;
 use actix_session::storage::RedisSessionStore;
@@ -13,7 +13,8 @@ use secrecy::{Secret, ExposeSecret};
 use sqlx::PgPool;
 use sqlx::postgres::PgPoolOptions;
 
-use crate::routes::{health_check, hello, user_info};
+use crate::routes::{health_check, hello};
+// use crate::routes::{health_check, hello, user_info};
 
 pub struct Application {
     port: u16,
@@ -67,7 +68,7 @@ async fn run(
             .wrap(Logger::new("%a %{User-Agent}i"))
             .route("/health_check", web::get().to(health_check))
             .route("/{name}", web::get().to(hello))
-            .route("/user/{id}", web::get().to(user_info))
+            // .route("/user/{id}", web::get().to(user_info))
             .app_data(db_pool.clone())
             .app_data(base_url.clone())
             .app_data(Data::new(HmacSecret(hmac_secret.clone())))

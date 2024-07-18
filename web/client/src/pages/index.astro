@@ -1,10 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import {Home} from '../components/home'
+import { Home } from "../components/home";
 ---
 
 <Layout title="Welcome to SkillsTech">
-  <main class="flex justify-center items-center h-[100vh]">
+  <main class="h-[100vh]">
     <Home client:only="react" />
   </main>
 </Layout>

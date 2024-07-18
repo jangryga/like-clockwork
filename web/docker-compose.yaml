@@ -24,7 +24,6 @@ services:
     volumes:
       - redis_data:/data
 
-
   nginx:
     image: jangryga/clockwork-balancer:latest
     volumes:
