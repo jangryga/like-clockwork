@@ -23,15 +23,15 @@ pub struct Application {
 
 impl Application {
     pub async fn build(config: Settings) -> Result<Self, anyhow::Error> {
-        let connection_pool = get_connection_pool(&config.database);
+        // let connection_pool = get_connection_pool(&config.database);
         let address = format!("{}:{}", config.application.host, config.application.port);
         let listener = TcpListener::bind(address)?;
         let port = listener.local_addr().unwrap().port();
 
         let server = run(
             listener,
-            connection_pool,
-            config.application.base_url,
+            // connection_pool,
+            // config.application.base_url,
             config.application.hmac_secret,
             config.redis_uri
         )
@@ -53,13 +53,13 @@ pub struct ApplicationBaseUrl(pub String);
 
 async fn run(
     listener: TcpListener,
-    db_pool: PgPool,
-    base_url: String,
+    // db_pool: PgPool,
+    // base_url: String,
     hmac_secret: Secret<String>,
     redis_uri: Secret<String>
 ) -> Result<Server, anyhow::Error> {
-    let db_pool = Data::new(db_pool);
-    let base_url = Data::new(ApplicationBaseUrl(base_url));
+    // let db_pool = Data::new(db_pool);
+    // let base_url = Data::new(ApplicationBaseUrl(base_url));
     let secret_key = Key::from(hmac_secret.expose_secret().as_bytes());
     let redis_store = RedisSessionStore::new(redis_uri.expose_secret()).await?;
     let server = HttpServer::new(move || {
@@ -69,8 +69,8 @@ async fn run(
             .route("/health_check", web::get().to(health_check))
             .route("/{name}", web::get().to(hello))
             // .route("/user/{id}", web::get().to(user_info))
-            .app_data(db_pool.clone())
-            .app_data(base_url.clone())
+            // .app_data(db_pool.clone())
+            // .app_data(base_url.clone())
             .app_data(Data::new(HmacSecret(hmac_secret.clone())))
     })
     .listen(listener)?
