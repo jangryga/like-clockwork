@@ -29,6 +29,7 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/www/skillstech.app:/var/www/skillstech.app
+      - /var/www/static:/var/www/static
     ports:
       - 80:80
       - 443:443
