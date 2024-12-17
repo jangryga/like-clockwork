@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>hello world</h1>
+    <button onclick="init()" >click me</button>
+    <script
+      src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+      integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      // Create a new WebSocket connection to the server
+      const socket = new WebSocket(
+        "wss://cll-new.grooove.pl/socket.io/?EIO=3&transport=websocket"
+      );
+
+      function init() {
+        const message = [
+          "data",
+          {
+            action: "init",
+            clan: "mrozon_dragonsy",
+            clanID: 1,
+            aid: "1075070",
+          },
+        ];
+
+        // Send the message
+        socket.send(JSON.stringify(message));
+        console.log("Message sent: ", message);
+      }
+
+      // Event listener for connection open
+      socket.onopen = function (event) {
+        console.log("WebSocket is connected.", event);
+      };
+
+      // Event listener for receiving messages from the server
+      socket.onmessage = function (event) {
+        // Log the raw message received
+        console.log("Raw message received from server: ", event.data);
+
+        // The message is prefixed with `42`, indicating a message event from Socket.IO
+        if (event.data.startsWith("42")) {
+          // Extract and parse the JSON payload
+          const payload = event.data.slice(2); // Remove the "42" prefix
+          const parsedData = JSON.parse(payload);
+
+          // Log the event type and data
+          console.log("Event type: ", parsedData[0]); // This should be "message"
+          console.log("Message data: ", parsedData[1]); // The actual data object
+
+          // Example: Accessing specific data from the response
+          const clanInfo = parsedData[1];
+          console.log("Clan Name: ", clanInfo.clan);
+          console.log("Your Rank: ", clanInfo.your_rank);
+          console.log("Clan Members: ", clanInfo.members);
+          console.log("Clan Settings: ", clanInfo.settings);
+        }
+      };
+
+      // Event listener for connection close
+      socket.onclose = function (event) {
+        console.log("WebSocket connection closed: ", event);
+      };
+
+      // Event listener for errors
+      socket.onerror = function (error) {
+        console.error("WebSocket error: ", error);
+      };
+    </script>
+  </body>
+</html>
