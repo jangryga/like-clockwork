@@ -37,7 +37,7 @@ services:
       - web
 
   downloader:
-    image: jangryga/salad-downloader:latest
+    image: jangryga/salad-downloader:0.0.2
     ports: 
       - "8081:8080"
 
