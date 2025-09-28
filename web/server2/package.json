@@ -1,0 +1,17 @@
+{
+  "name": "server2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.1",
+    "@types/node": "^24.5.2",
+    "dotenv": "^17.2.2",
+    "drizzle-orm": "^0.44.5",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.5"
+  }
+}
