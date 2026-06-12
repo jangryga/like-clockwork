@@ -38,15 +38,6 @@ jobs:
         working-directory: ./web/nginx
         run: |
           docker buildx build --tag jangryga/clockwork-balancer:latest --push .
-
-      - name: Build and push discord-scraper
-        uses: docker/build-push-action@v5
-        with:
-          context: ./web/discord-scraper
-          push: true
-          tags: jangryga/discord-scraper:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
   
   deploy:
     name: Deploy to Linode
