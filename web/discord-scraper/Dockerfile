@@ -19,7 +19,8 @@ COPY src/ ./src/
 
 COPY --from=viewer-build /app/viewer/dist ./viewer/dist
 
-VOLUME ["/app/data", "/app/assets"]
+COPY data/ ./data/
+COPY assets/ ./assets/
 
 ENV PORT=3001
 EXPOSE 3001

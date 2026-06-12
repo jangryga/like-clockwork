@@ -46,9 +46,6 @@ services:
     image: jangryga/discord-scraper:latest
     ports:
       - "3001:3001"
-    volumes:
-      - ./discord-scraper/data:/app/data
-      - ./discord-scraper/assets:/app/assets
     restart: unless-stopped
 
 volumes:
