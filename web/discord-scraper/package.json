@@ -1,0 +1,24 @@
+{
+  "name": "discord-scraper",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsx index.ts",
+    "serve": "tsx src/server.ts",
+    "build:viewer": "cd viewer && npm run build",
+    "dev:api": "tsx src/server.ts",
+    "dev:viewer": "cd viewer && npx vite",
+    "dev": "concurrently -n api,viewer -c blue,green \"tsx src/server.ts\" \"cd viewer && npx vite\""
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^25.9.2",
+    "concurrently": "^9.0.0",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}

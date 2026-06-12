@@ -38,6 +38,15 @@ jobs:
         working-directory: ./web/nginx
         run: |
           docker buildx build --tag jangryga/clockwork-balancer:latest --push .
+
+      - name: Build and push discord-scraper
+        uses: docker/build-push-action@v5
+        with:
+          context: ./web/discord-scraper
+          push: true
+          tags: jangryga/discord-scraper:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
   
   deploy:
     name: Deploy to Linode
@@ -62,6 +71,9 @@ jobs:
         run: |
           scp  -o StrictHostKeyChecking=no -r ./web/docker-compose.yaml root@${{ secrets.LINODE_IP_ADDRESS }}:/app
           ssh -o StrictHostKeyChecking=no root@${{ secrets.LINODE_IP_ADDRESS }} << "ENDSSH"
+            mkdir -p /etc/nginx
+            echo '${{ secrets.HTPASSWD_CONTENT }}' > /etc/nginx/.htpasswd
+            chmod 644 /etc/nginx/.htpasswd
             cd /app
             export DB_HOST=${{ secrets.DB_HOST }}
             export DB_USERNAME=${{ secrets.DB_USERNAME }}
